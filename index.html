@@ -1,1 +1,2291 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
 
+<head>
+
+    <!-- ============================================================ -->
+    <!-- DOCUMENT CONFIGURATION -->
+    <!-- ============================================================ -->
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Sanaullah AI Command Center"
+    >
+
+    <meta
+        name="theme-color"
+        content="#0b0f14"
+    >
+
+    <title>Sanaullah AI Command Center</title>
+
+
+    <!-- ============================================================ -->
+    <!-- GOOGLE FONTS -->
+    <!-- ============================================================ -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ============================================================ -->
+    <!-- FONT AWESOME -->
+    <!-- ============================================================ -->
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css"
+    >
+
+
+    <!-- ============================================================ -->
+    <!-- MAIN STYLESHEET -->
+    <!-- ============================================================ -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body>
+
+
+    <!-- ============================================================ -->
+    <!-- BACKGROUND -->
+    <!-- ============================================================ -->
+
+    <div class="app-background">
+
+        <div class="background-grid"></div>
+
+        <div class="background-glow background-glow-one"></div>
+
+        <div class="background-glow background-glow-two"></div>
+
+        <div class="background-orbit"></div>
+
+        <div class="background-particles"></div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- APPLICATION LOADER -->
+    <!-- ============================================================ -->
+
+    <div
+        id="appLoader"
+        class="app-loader"
+    >
+
+        <div class="loader-content">
+
+            <div class="loader-icon">
+                <i class="fas fa-robot"></i>
+            </div>
+
+            <h2>Sanaullah AI</h2>
+
+            <p>Initializing Command Center...</p>
+
+            <div class="loader-bar">
+
+                <span></span>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- APPLICATION -->
+    <!-- ============================================================ -->
+
+    <div
+        id="app"
+        class="app"
+    >
+
+
+        <!-- ======================================================== -->
+        <!-- SIDEBAR OVERLAY -->
+        <!-- ======================================================== -->
+
+        <div
+            id="sidebarOverlay"
+            class="sidebar-overlay"
+        ></div>
+
+
+        <!-- ======================================================== -->
+        <!-- SIDEBAR -->
+        <!-- ======================================================== -->
+
+        <aside
+            id="mainSidebar"
+            class="main-sidebar"
+        >
+
+
+            <!-- ==================================================== -->
+            <!-- SIDEBAR HEADER -->
+            <!-- ==================================================== -->
+
+            <div class="sidebar-header">
+
+                <a
+                    href="#dashboard"
+                    class="brand-link"
+                    data-page="dashboard"
+                >
+
+                    <div class="brand-icon">
+
+                        <i class="fas fa-brain"></i>
+
+                    </div>
+
+                    <div class="brand-text">
+
+                        <strong>Sanaullah AI</strong>
+
+                        <span>Command Center</span>
+
+                    </div>
+
+                </a>
+
+
+                <button
+                    id="sidebarClose"
+                    class="sidebar-close"
+                    type="button"
+                    aria-label="Close sidebar"
+                >
+
+                    <i class="fas fa-times"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ==================================================== -->
+            <!-- USER PROFILE -->
+            <!-- ==================================================== -->
+
+            <div class="sidebar-profile">
+
+                <div class="profile-avatar">
+
+                    <span>S</span>
+
+                    <span class="online-status"></span>
+
+                </div>
+
+                <div class="profile-info">
+
+                    <strong>Sanaullah</strong>
+
+                    <span>AI Workspace</span>
+
+                </div>
+
+                <button
+                    id="profileMenuButton"
+                    class="profile-menu-button"
+                    type="button"
+                >
+
+                    <i class="fas fa-ellipsis-v"></i>
+
+                </button>
+
+            </div>
+
+
+            <!-- ==================================================== -->
+            <!-- SIDEBAR NAVIGATION -->
+            <!-- ==================================================== -->
+
+            <nav
+                class="sidebar-navigation"
+                aria-label="Main Navigation"
+            >
+
+
+                <div class="navigation-group">
+
+                    <div class="navigation-title">
+                        MAIN
+                    </div>
+
+
+                    <a
+                        href="#dashboard"
+                        class="nav-item active"
+                        data-page="dashboard"
+                    >
+
+                        <i class="fas fa-home"></i>
+
+                        <span>Dashboard</span>
+
+                    </a>
+
+
+                    <a
+                        href="#ai-assistant"
+                        class="nav-item"
+                        data-page="ai-assistant"
+                    >
+
+                        <i class="fas fa-robot"></i>
+
+                        <span>AI Assistant</span>
+
+                    </a>
+
+
+                    <a
+                        href="#tasks"
+                        class="nav-item"
+                        data-page="tasks"
+                    >
+
+                        <i class="fas fa-list-check"></i>
+
+                        <span>My Tasks</span>
+
+                        <span class="nav-badge">
+                            3
+                        </span>
+
+                    </a>
+
+
+                    <a
+                        href="#projects"
+                        class="nav-item"
+                        data-page="projects"
+                    >
+
+                        <i class="fas fa-folder-open"></i>
+
+                        <span>Projects</span>
+
+                    </a>
+
+                </div>
+
+
+                <div class="navigation-group">
+
+                    <div class="navigation-title">
+                        AI AGENTS
+                    </div>
+
+
+                    <a
+                        href="#coding-agent"
+                        class="nav-item"
+                        data-page="coding-agent"
+                    >
+
+                        <i class="fas fa-code"></i>
+
+                        <span>Coding Agent</span>
+
+                    </a>
+
+
+                    <a
+                        href="#web-agent"
+                        class="nav-item"
+                        data-page="web-agent"
+                    >
+
+                        <i class="fas fa-globe"></i>
+
+                        <span>Web Agent</span>
+
+                    </a>
+
+
+                    <a
+                        href="#social-media"
+                        class="nav-item"
+                        data-page="social-media"
+                    >
+
+                        <i class="fas fa-share-nodes"></i>
+
+                        <span>Social Media</span>
+
+                    </a>
+
+
+                    <a
+                        href="#research-agent"
+                        class="nav-item"
+                        data-page="research-agent"
+                    >
+
+                        <i class="fas fa-magnifying-glass"></i>
+
+                        <span>Research Agent</span>
+
+                    </a>
+
+                </div>
+
+
+                <div class="navigation-group">
+
+                    <div class="navigation-title">
+                        SYSTEM
+                    </div>
+
+
+                    <a
+                        href="#ai-memory"
+                        class="nav-item"
+                        data-page="ai-memory"
+                    >
+
+                        <i class="fas fa-database"></i>
+
+                        <span>AI Memory</span>
+
+                    </a>
+
+
+                    <a
+                        href="#integrations"
+                        class="nav-item"
+                        data-page="integrations"
+                    >
+
+                        <i class="fas fa-plug"></i>
+
+                        <span>Integrations</span>
+
+                    </a>
+
+
+                    <a
+                        href="#activity"
+                        class="nav-item"
+                        data-page="activity"
+                    >
+
+                        <i class="fas fa-chart-line"></i>
+
+                        <span>Activity</span>
+
+                    </a>
+
+
+                    <a
+                        href="#settings"
+                        class="nav-item"
+                        data-page="settings"
+                    >
+
+                        <i class="fas fa-gear"></i>
+
+                        <span>Settings</span>
+
+                    </a>
+
+                </div>
+
+            </nav>
+
+
+            <!-- ==================================================== -->
+            <!-- SIDEBAR FOOTER -->
+            <!-- ==================================================== -->
+
+            <div class="sidebar-footer">
+
+                <div class="ai-status">
+
+                    <span class="status-dot"></span>
+
+                    <div>
+
+                        <strong>AI System</strong>
+
+                        <small>Ready</small>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </aside>
+
+
+        <!-- ======================================================== -->
+        <!-- MAIN CONTENT -->
+        <!-- ======================================================== -->
+
+        <main class="main-content">
+
+
+            <!-- ==================================================== -->
+            <!-- TOP HEADER -->
+            <!-- ==================================================== -->
+
+            <header class="top-header">
+
+
+                <div class="header-left">
+
+                    <button
+                        id="sidebarToggle"
+                        class="icon-button mobile-menu-button"
+                        type="button"
+                        aria-label="Open sidebar"
+                    >
+
+                        <i class="fas fa-bars"></i>
+
+                    </button>
+
+
+                    <div class="page-heading">
+
+                        <span class="heading-label">
+                            AI WORKSPACE
+                        </span>
+
+                        <h1 id="pageTitle">
+                            Dashboard
+                        </h1>
+
+                    </div>
+
+                </div>
+
+
+                <div class="header-right">
+
+
+                    <!-- ============================================ -->
+                    <!-- GLOBAL SEARCH -->
+                    <!-- ============================================ -->
+
+                    <button
+                        id="globalSearchButton"
+                        class="header-action"
+                        type="button"
+                        aria-label="Search"
+                    >
+
+                        <i class="fas fa-search"></i>
+
+                    </button>
+
+
+                    <!-- ============================================ -->
+                    <!-- NOTIFICATIONS -->
+                    <!-- ============================================ -->
+
+                    <button
+                        id="notificationButton"
+                        class="header-action notification-button"
+                        type="button"
+                        aria-label="Notifications"
+                    >
+
+                        <i class="fas fa-bell"></i>
+
+                        <span class="notification-count">
+                            3
+                        </span>
+
+                    </button>
+
+
+                    <!-- ============================================ -->
+                    <!-- USER MENU -->
+                    <!-- ============================================ -->
+
+                    <button
+                        id="userMenuButton"
+                        class="header-user"
+                        type="button"
+                    >
+
+                        <div class="header-user-avatar">
+                            S
+                        </div>
+
+                        <div class="header-user-info">
+
+                            <strong>Sanaullah</strong>
+
+                            <span>Administrator</span>
+
+                        </div>
+
+                        <i class="fas fa-chevron-down"></i>
+
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <!-- ==================================================== -->
+            <!-- PAGE CONTAINER -->
+            <!-- ==================================================== -->
+
+            <div class="page-container">
+
+
+                <!-- ================================================= -->
+                <!-- DASHBOARD PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="dashboard"
+                    class="page-section active"
+                    data-page-section="dashboard"
+                >
+
+
+                    <!-- ============================================= -->
+                    <!-- WELCOME HERO -->
+                    <!-- ============================================= -->
+
+                    <div class="dashboard-hero">
+
+
+                        <div class="hero-content">
+
+                            <span class="hero-badge">
+
+                                <i class="fas fa-sparkles"></i>
+
+                                AI Command Center
+
+                            </span>
+
+
+                            <h2>
+                                Build. Create. Automate.
+                            </h2>
+
+
+                            <p>
+                                Give your AI a command and let your
+                                intelligent agents help you complete
+                                the work.
+                            </p>
+
+
+                            <div class="hero-actions">
+
+                                <button
+                                    class="primary-button"
+                                    id="heroStartButton"
+                                    type="button"
+                                >
+
+                                    <i class="fas fa-rocket"></i>
+
+                                    Start AI Task
+
+                                </button>
+
+
+                                <button
+                                    class="secondary-button"
+                                    id="heroProjectsButton"
+                                    type="button"
+                                >
+
+                                    <i class="fas fa-folder"></i>
+
+                                    View Projects
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="hero-visual">
+
+                            <div class="ai-core">
+
+                                <div class="ai-core-ring ring-one"></div>
+
+                                <div class="ai-core-ring ring-two"></div>
+
+                                <div class="ai-core-ring ring-three"></div>
+
+                                <div class="ai-core-center">
+
+                                    <i class="fas fa-brain"></i>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================================= -->
+                    <!-- AI COMMAND CENTER -->
+                    <!-- ============================================= -->
+
+                    <div class="section-block">
+
+
+                        <div class="section-header">
+
+                            <div>
+
+                                <span class="section-label">
+                                    COMMAND
+                                </span>
+
+                                <h3>
+                                    AI Command Center
+                                </h3>
+
+                            </div>
+
+
+                            <span class="system-ready">
+
+                                <span></span>
+
+                                AI Ready
+
+                            </span>
+
+                        </div>
+
+
+                        <div class="command-center-card">
+
+
+                            <div class="command-input-wrapper">
+
+                                <div class="command-icon">
+
+                                    <i class="fas fa-wand-magic-sparkles"></i>
+
+                                </div>
+
+
+                                <textarea
+                                    id="commandInput"
+                                    rows="5"
+                                    placeholder="Tell AI what you want to do..."
+                                    aria-label="AI Command"
+                                ></textarea>
+
+                            </div>
+
+
+                            <div class="command-footer">
+
+
+                                <div
+                                    id="quickCommandButtons"
+                                    class="quick-commands"
+                                >
+
+                                    <button
+                                        class="quick-command"
+                                        type="button"
+                                        data-command="Create a website"
+                                    >
+
+                                        <i class="fas fa-globe"></i>
+
+                                        Create Website
+
+                                    </button>
+
+
+                                    <button
+                                        class="quick-command"
+                                        type="button"
+                                        data-command="Write code"
+                                    >
+
+                                        <i class="fas fa-code"></i>
+
+                                        Write Code
+
+                                    </button>
+
+
+                                    <button
+                                        class="quick-command"
+                                        type="button"
+                                        data-command="Research a topic"
+                                    >
+
+                                        <i class="fas fa-search"></i>
+
+                                        Research
+
+                                    </button>
+
+
+                                    <button
+                                        class="quick-command"
+                                        type="button"
+                                        data-command="Create social media content"
+                                    >
+
+                                        <i class="fas fa-share-nodes"></i>
+
+                                        Social Content
+
+                                    </button>
+
+                                </div>
+
+
+                                <div class="command-actions">
+
+                                    <button
+                                        id="clearCommandButton"
+                                        class="secondary-button"
+                                        type="button"
+                                    >
+
+                                        <i class="fas fa-eraser"></i>
+
+                                        Clear
+
+                                    </button>
+
+
+                                    <button
+                                        id="executeCommandButton"
+                                        class="primary-button"
+                                        type="button"
+                                    >
+
+                                        <i class="fas fa-paper-plane"></i>
+
+                                        Execute Command
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================================= -->
+                    <!-- STATISTICS -->
+                    <!-- ============================================= -->
+
+                    <div class="stats-grid">
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+
+                                <i class="fas fa-list-check"></i>
+
+                            </div>
+
+                            <div class="stat-content">
+
+                                <span>
+                                    Active Tasks
+                                </span>
+
+                                <strong>
+                                    03
+                                </strong>
+
+                                <small>
+                                    <i class="fas fa-arrow-up"></i>
+                                    12% this week
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+
+                                <i class="fas fa-folder-open"></i>
+
+                            </div>
+
+                            <div class="stat-content">
+
+                                <span>
+                                    Projects
+                                </span>
+
+                                <strong>
+                                    08
+                                </strong>
+
+                                <small>
+                                    02 updated today
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+
+                                <i class="fas fa-robot"></i>
+
+                            </div>
+
+                            <div class="stat-content">
+
+                                <span>
+                                    AI Tasks
+                                </span>
+
+                                <strong>
+                                    127
+                                </strong>
+
+                                <small>
+                                    <i class="fas fa-arrow-up"></i>
+                                    24% this month
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+                        <div class="stat-card">
+
+                            <div class="stat-icon">
+
+                                <i class="fas fa-bolt"></i>
+
+                            </div>
+
+                            <div class="stat-content">
+
+                                <span>
+                                    AI Credits
+                                </span>
+
+                                <strong>
+                                    92%
+                                </strong>
+
+                                <small>
+                                    Available
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================================= -->
+                    <!-- DASHBOARD COLUMNS -->
+                    <!-- ============================================= -->
+
+                    <div class="dashboard-columns">
+
+
+                        <!-- ========================================= -->
+                        <!-- ACTIVE TASKS -->
+                        <!-- ========================================= -->
+
+                        <div class="dashboard-card">
+
+                            <div class="card-header">
+
+                                <div>
+
+                                    <span class="section-label">
+                                        WORKFLOW
+                                    </span>
+
+                                    <h3>
+                                        Active Tasks
+                                    </h3>
+
+                                </div>
+
+                                <button
+                                    class="text-button"
+                                    data-page-target="tasks"
+                                    type="button"
+                                >
+
+                                    View All
+
+                                    <i class="fas fa-arrow-right"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="activeTasksList"
+                                class="task-list"
+                            >
+
+
+                                <div class="task-item">
+
+                                    <div class="task-icon coding">
+
+                                        <i class="fas fa-code"></i>
+
+                                    </div>
+
+                                    <div class="task-info">
+
+                                        <strong>
+                                            Build AI Dashboard
+                                        </strong>
+
+                                        <span>
+                                            Coding Agent
+                                        </span>
+
+                                    </div>
+
+                                    <div class="task-progress">
+
+                                        <div class="progress-bar">
+
+                                            <span style="width: 75%;"></span>
+
+                                        </div>
+
+                                        <small>
+                                            75%
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="task-item">
+
+                                    <div class="task-icon research">
+
+                                        <i class="fas fa-search"></i>
+
+                                    </div>
+
+                                    <div class="task-info">
+
+                                        <strong>
+                                            Market Research
+                                        </strong>
+
+                                        <span>
+                                            Research Agent
+                                        </span>
+
+                                    </div>
+
+                                    <div class="task-progress">
+
+                                        <div class="progress-bar">
+
+                                            <span style="width: 45%;"></span>
+
+                                        </div>
+
+                                        <small>
+                                            45%
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="task-item">
+
+                                    <div class="task-icon web">
+
+                                        <i class="fas fa-globe"></i>
+
+                                    </div>
+
+                                    <div class="task-info">
+
+                                        <strong>
+                                            Website Optimization
+                                        </strong>
+
+                                        <span>
+                                            Web Agent
+                                        </span>
+
+                                    </div>
+
+                                    <div class="task-progress">
+
+                                        <div class="progress-bar">
+
+                                            <span style="width: 60%;"></span>
+
+                                        </div>
+
+                                        <small>
+                                            60%
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+                        <!-- ========================================= -->
+                        <!-- RECENT ACTIVITY -->
+                        <!-- ========================================= -->
+
+                        <div class="dashboard-card">
+
+                            <div class="card-header">
+
+                                <div>
+
+                                    <span class="section-label">
+                                        ACTIVITY
+                                    </span>
+
+                                    <h3>
+                                        Recent Activity
+                                    </h3>
+
+                                </div>
+
+                                <button
+                                    class="text-button"
+                                    data-page-target="activity"
+                                    type="button"
+                                >
+
+                                    View All
+
+                                    <i class="fas fa-arrow-right"></i>
+
+                                </button>
+
+                            </div>
+
+
+                            <div
+                                id="recentActivityList"
+                                class="activity-list"
+                            >
+
+
+                                <div class="activity-item">
+
+                                    <div class="activity-icon success">
+
+                                        <i class="fas fa-check"></i>
+
+                                    </div>
+
+                                    <div class="activity-info">
+
+                                        <strong>
+                                            Task completed
+                                        </strong>
+
+                                        <span>
+                                            AI Assistant completed a task
+                                        </span>
+
+                                        <small>
+                                            5 minutes ago
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="activity-item">
+
+                                    <div class="activity-icon ai">
+
+                                        <i class="fas fa-robot"></i>
+
+                                    </div>
+
+                                    <div class="activity-info">
+
+                                        <strong>
+                                            AI Agent started
+                                        </strong>
+
+                                        <span>
+                                            Coding Agent started a workflow
+                                        </span>
+
+                                        <small>
+                                            24 minutes ago
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="activity-item">
+
+                                    <div class="activity-icon project">
+
+                                        <i class="fas fa-folder"></i>
+
+                                    </div>
+
+                                    <div class="activity-info">
+
+                                        <strong>
+                                            Project updated
+                                        </strong>
+
+                                        <span>
+                                            AI Command Center project updated
+                                        </span>
+
+                                        <small>
+                                            1 hour ago
+                                        </small>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- ============================================= -->
+                    <!-- PROJECTS -->
+                    <!-- ============================================= -->
+
+                    <div class="section-block">
+
+
+                        <div class="section-header">
+
+                            <div>
+
+                                <span class="section-label">
+                                    WORKSPACE
+                                </span>
+
+                                <h3>
+                                    My Projects
+                                </h3>
+
+                            </div>
+
+
+                            <button
+                                id="addProjectButton"
+                                class="primary-button small"
+                                type="button"
+                            >
+
+                                <i class="fas fa-plus"></i>
+
+                                New Project
+
+                            </button>
+
+                        </div>
+
+
+                        <div
+                            id="projectsGrid"
+                            class="projects-grid"
+                        >
+
+
+                            <div class="project-card">
+
+                                <div class="project-top">
+
+                                    <div class="project-icon">
+
+                                        <i class="fas fa-brain"></i>
+
+                                    </div>
+
+                                    <button
+                                        class="project-menu"
+                                        type="button"
+                                    >
+
+                                        <i class="fas fa-ellipsis"></i>
+
+                                    </button>
+
+                                </div>
+
+
+                                <h4>
+                                    Sanaullah AI Command Center
+                                </h4>
+
+                                <p>
+                                    Personal AI agent management system.
+                                </p>
+
+
+                                <div class="project-meta">
+
+                                    <span>
+
+                                        <i class="fas fa-clock"></i>
+
+                                        Active
+
+                                    </span>
+
+                                    <span>
+
+                                        <i class="fas fa-code"></i>
+
+                                        Development
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="project-progress">
+
+                                    <div class="progress-header">
+
+                                        <span>
+                                            Progress
+                                        </span>
+
+                                        <strong>
+                                            35%
+                                        </strong>
+
+                                    </div>
+
+                                    <div class="progress-bar">
+
+                                        <span style="width: 35%;"></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="project-card">
+
+                                <div class="project-top">
+
+                                    <div class="project-icon">
+
+                                        <i class="fas fa-graduation-cap"></i>
+
+                                    </div>
+
+                                    <button
+                                        class="project-menu"
+                                        type="button"
+                                    >
+
+                                        <i class="fas fa-ellipsis"></i>
+
+                                    </button>
+
+                                </div>
+
+
+                                <h4>
+                                    ScaleFlow University
+                                </h4>
+
+                                <p>
+                                    AI-powered learning management system.
+                                </p>
+
+
+                                <div class="project-meta">
+
+                                    <span>
+
+                                        <i class="fas fa-clock"></i>
+
+                                        Active
+
+                                    </span>
+
+                                    <span>
+
+                                        <i class="fas fa-layer-group"></i>
+
+                                        LMS
+
+                                    </span>
+
+                                </div>
+
+
+                                <div class="project-progress">
+
+                                    <div class="progress-header">
+
+                                        <span>
+                                            Progress
+                                        </span>
+
+                                        <strong>
+                                            72%
+                                        </strong>
+
+                                    </div>
+
+                                    <div class="progress-bar">
+
+                                        <span style="width: 72%;"></span>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                            <div class="project-card add-project-card">
+
+                                <button
+                                    class="add-project-content"
+                                    type="button"
+                                >
+
+                                    <div class="add-project-icon">
+
+                                        <i class="fas fa-plus"></i>
+
+                                    </div>
+
+                                    <strong>
+                                        Create New Project
+                                    </strong>
+
+                                    <span>
+                                        Start something new with AI
+                                    </span>
+
+                                </button>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- AI ASSISTANT PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="ai-assistant"
+                    class="page-section"
+                    data-page-section="ai-assistant"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-robot"></i>
+
+                        </div>
+
+                        <h2>
+                            AI Assistant
+                        </h2>
+
+                        <p>
+                            Your intelligent AI assistant workspace.
+                        </p>
+
+                        <button
+                            class="primary-button"
+                            data-page-target="dashboard"
+                            type="button"
+                        >
+
+                            <i class="fas fa-arrow-left"></i>
+
+                            Back to Dashboard
+
+                        </button>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- TASKS PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="tasks"
+                    class="page-section"
+                    data-page-section="tasks"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-list-check"></i>
+
+                        </div>
+
+                        <h2>
+                            My Tasks
+                        </h2>
+
+                        <p>
+                            Manage and monitor your AI tasks.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- PROJECTS PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="projects"
+                    class="page-section"
+                    data-page-section="projects"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-folder-open"></i>
+
+                        </div>
+
+                        <h2>
+                            Projects
+                        </h2>
+
+                        <p>
+                            Manage your projects and AI workflows.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- CODING AGENT PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="coding-agent"
+                    class="page-section"
+                    data-page-section="coding-agent"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-code"></i>
+
+                        </div>
+
+                        <h2>
+                            Coding Agent
+                        </h2>
+
+                        <p>
+                            AI-powered coding and development agent.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- WEB AGENT PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="web-agent"
+                    class="page-section"
+                    data-page-section="web-agent"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-globe"></i>
+
+                        </div>
+
+                        <h2>
+                            Web Agent
+                        </h2>
+
+                        <p>
+                            AI-powered web development and management.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- SOCIAL MEDIA PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="social-media"
+                    class="page-section"
+                    data-page-section="social-media"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-share-nodes"></i>
+
+                        </div>
+
+                        <h2>
+                            Social Media
+                        </h2>
+
+                        <p>
+                            Manage social media tasks with AI.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- RESEARCH AGENT PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="research-agent"
+                    class="page-section"
+                    data-page-section="research-agent"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-magnifying-glass"></i>
+
+                        </div>
+
+                        <h2>
+                            Research Agent
+                        </h2>
+
+                        <p>
+                            Research, analyze and organize information.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- AI MEMORY PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="ai-memory"
+                    class="page-section"
+                    data-page-section="ai-memory"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-database"></i>
+
+                        </div>
+
+                        <h2>
+                            AI Memory
+                        </h2>
+
+                        <p>
+                            Manage AI knowledge, memory and context.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- INTEGRATIONS PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="integrations"
+                    class="page-section"
+                    data-page-section="integrations"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-plug"></i>
+
+                        </div>
+
+                        <h2>
+                            Integrations
+                        </h2>
+
+                        <p>
+                            Connect external services and APIs.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- ACTIVITY PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="activity"
+                    class="page-section"
+                    data-page-section="activity"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-chart-line"></i>
+
+                        </div>
+
+                        <h2>
+                            Activity
+                        </h2>
+
+                        <p>
+                            View your complete AI activity history.
+                        </p>
+
+                    </div>
+
+                </section>
+
+
+                <!-- ================================================= -->
+                <!-- SETTINGS PAGE -->
+                <!-- ================================================= -->
+
+                <section
+                    id="settings"
+                    class="page-section"
+                    data-page-section="settings"
+                >
+
+                    <div class="page-placeholder">
+
+                        <div class="placeholder-icon">
+
+                            <i class="fas fa-gear"></i>
+
+                        </div>
+
+                        <h2>
+                            Settings
+                        </h2>
+
+                        <p>
+                            Configure your AI Command Center.
+                        </p>
+
+                    </div>
+
+                </section>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- GLOBAL SEARCH MODAL -->
+    <!-- ============================================================ -->
+
+    <div
+        id="searchModal"
+        class="modal"
+        aria-hidden="true"
+    >
+
+        <div class="modal-overlay"></div>
+
+        <div class="search-modal-content">
+
+            <div class="search-modal-header">
+
+                <h3>
+                    <i class="fas fa-search"></i>
+                    Search
+                </h3>
+
+                <button
+                    id="closeSearchModal"
+                    class="modal-close"
+                    type="button"
+                >
+
+                    <i class="fas fa-times"></i>
+
+                </button>
+
+            </div>
+
+
+            <div class="search-input-container">
+
+                <i class="fas fa-search"></i>
+
+                <input
+                    id="globalSearchInput"
+                    type="search"
+                    placeholder="Search pages, tasks, projects..."
+                    autocomplete="off"
+                >
+
+                <span class="search-shortcut">
+                    ESC
+                </span>
+
+            </div>
+
+
+            <div
+                id="searchResults"
+                class="search-results"
+            >
+
+                <div class="search-empty">
+
+                    <i class="fas fa-search"></i>
+
+                    <p>
+                        Start typing to search
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- NOTIFICATION PANEL -->
+    <!-- ============================================================ -->
+
+    <div
+        id="notificationPanel"
+        class="notification-panel"
+    >
+
+        <div class="notification-header">
+
+            <div>
+
+                <span class="section-label">
+                    CENTER
+                </span>
+
+                <h3>
+                    Notifications
+                </h3>
+
+            </div>
+
+            <button
+                id="closeNotificationPanel"
+                class="icon-button"
+                type="button"
+            >
+
+                <i class="fas fa-times"></i>
+
+            </button>
+
+        </div>
+
+
+        <div class="notification-list">
+
+
+            <div class="notification-item unread">
+
+                <div class="notification-icon success">
+
+                    <i class="fas fa-check"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Task Completed
+                    </strong>
+
+                    <p>
+                        Your AI task has been completed successfully.
+                    </p>
+
+                    <small>
+                        5 minutes ago
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item unread">
+
+                <div class="notification-icon ai">
+
+                    <i class="fas fa-robot"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        AI Agent Ready
+                    </strong>
+
+                    <p>
+                        Coding Agent is ready for your next command.
+                    </p>
+
+                    <small>
+                        24 minutes ago
+                    </small>
+
+                </div>
+
+            </div>
+
+
+            <div class="notification-item">
+
+                <div class="notification-icon project">
+
+                    <i class="fas fa-folder"></i>
+
+                </div>
+
+                <div>
+
+                    <strong>
+                        Project Updated
+                    </strong>
+
+                    <p>
+                        Your project information was updated.
+                    </p>
+
+                    <small>
+                        1 hour ago
+                    </small>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="notification-footer">
+
+            <button
+                class="text-button"
+                data-page-target="activity"
+                type="button"
+            >
+
+                View All Activity
+
+                <i class="fas fa-arrow-right"></i>
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- USER MENU -->
+    <!-- ============================================================ -->
+
+    <div
+        id="userMenu"
+        class="user-menu"
+    >
+
+        <div class="user-menu-header">
+
+            <div class="header-user-avatar">
+                S
+            </div>
+
+            <div>
+
+                <strong>
+                    Sanaullah
+                </strong>
+
+                <span>
+                    Administrator
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="user-menu-links">
+
+            <button
+                type="button"
+                data-page-target="settings"
+            >
+
+                <i class="fas fa-user"></i>
+
+                Profile
+
+            </button>
+
+
+            <button
+                type="button"
+                data-page-target="settings"
+            >
+
+                <i class="fas fa-gear"></i>
+
+                Settings
+
+            </button>
+
+
+            <button
+                type="button"
+                data-page-target="activity"
+            >
+
+                <i class="fas fa-chart-line"></i>
+
+                Activity
+
+            </button>
+
+
+            <button
+                id="logoutButton"
+                type="button"
+                class="danger"
+            >
+
+                <i class="fas fa-right-from-bracket"></i>
+
+                Sign Out
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- ADD PROJECT MODAL -->
+    <!-- ============================================================ -->
+
+    <div
+        id="addProjectModal"
+        class="modal"
+        aria-hidden="true"
+    >
+
+        <div class="modal-overlay"></div>
+
+        <div class="modal-content">
+
+            <div class="modal-header">
+
+                <div>
+
+                    <span class="section-label">
+                        WORKSPACE
+                    </span>
+
+                    <h3>
+                        Create New Project
+                    </h3>
+
+                </div>
+
+                <button
+                    id="closeAddProjectModal"
+                    class="modal-close"
+                    type="button"
+                >
+
+                    <i class="fas fa-times"></i>
+
+                </button>
+
+            </div>
+
+
+            <form
+                id="addProjectForm"
+                class="project-form"
+            >
+
+
+                <div class="form-group">
+
+                    <label for="projectName">
+                        Project Name
+                    </label>
+
+                    <input
+                        id="projectName"
+                        name="projectName"
+                        type="text"
+                        placeholder="Enter project name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectDescription">
+                        Description
+                    </label>
+
+                    <textarea
+                        id="projectDescription"
+                        name="projectDescription"
+                        rows="4"
+                        placeholder="Describe your project..."
+                    ></textarea>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="projectType">
+                        Project Type
+                    </label>
+
+                    <select
+                        id="projectType"
+                        name="projectType"
+                    >
+
+                        <option value="general">
+                            General
+                        </option>
+
+                        <option value="website">
+                            Website
+                        </option>
+
+                        <option value="coding">
+                            Coding
+                        </option>
+
+                        <option value="research">
+                            Research
+                        </option>
+
+                        <option value="social">
+                            Social Media
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-actions">
+
+                    <button
+                        id="cancelProjectButton"
+                        class="secondary-button"
+                        type="button"
+                    >
+
+                        Cancel
+
+                    </button>
+
+
+                    <button
+                        class="primary-button"
+                        type="submit"
+                    >
+
+                        <i class="fas fa-plus"></i>
+
+                        Create Project
+
+                    </button>
+
+                </div>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- ============================================================ -->
+    <!-- TOAST CONTAINER -->
+    <!-- ============================================================ -->
+
+    <div
+        id="toastContainer"
+        class="toast-container"
+    ></div>
+
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT -->
+    <!-- ============================================================ -->
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
