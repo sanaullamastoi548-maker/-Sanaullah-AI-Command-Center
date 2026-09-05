@@ -1,90 +1,32 @@
 // ============================================================
 // SANAULLAH AI COMMAND CENTER
-// MAIN JAVASCRIPT
+// TASK UNDERSTANDING ENGINE — PART 1
 // ============================================================
-
 
 // ============================================================
 // APPLICATION STATE
 // ============================================================
 
 const AppState = {
-
     currentPage: "dashboard",
-
     sidebarOpen: false,
-
     searchOpen: false,
-
     notificationOpen: false,
-
     userMenuOpen: false,
-
     addProjectOpen: false,
-
     isProcessing: false,
 
-    currentCommand: "",
-
-    currentTask: null,
-
     projects: [],
-
     tasks: [],
-
     activity: []
-
 };
 
 
 // ============================================================
-// DOM ELEMENTS
+// DOM REFERENCES
 // ============================================================
 
-const appLoader = document.getElementById("appLoader");
-const app = document.getElementById("app");
-
-const mainSidebar = document.getElementById("mainSidebar");
-const sidebarOverlay = document.getElementById("sidebarOverlay");
-
-const sidebarToggle = document.getElementById("sidebarToggle");
-const sidebarClose = document.getElementById("sidebarClose");
-
-const pageTitle = document.getElementById("pageTitle");
-
-const commandInput = document.getElementById("commandInput");
-const executeCommandButton = document.getElementById("executeCommandButton");
-const clearCommandButton = document.getElementById("clearCommandButton");
-
-const globalSearchButton = document.getElementById("globalSearchButton");
-const globalSearchInput = document.getElementById("globalSearchInput");
-
-const searchModal = document.getElementById("searchModal");
-const closeSearchModal = document.getElementById("closeSearchModal");
-const searchResults = document.getElementById("searchResults");
-
-const notificationButton = document.getElementById("notificationButton");
-const notificationPanel = document.getElementById("notificationPanel");
-const closeNotificationPanel = document.getElementById("closeNotificationPanel");
-
-const userMenuButton = document.getElementById("userMenuButton");
-const userMenu = document.getElementById("userMenu");
-const profileMenuButton = document.getElementById("profileMenuButton");
-
-const addProjectButton = document.getElementById("addProjectButton");
-const addProjectModal = document.getElementById("addProjectModal");
-const closeAddProjectModal = document.getElementById("closeAddProjectModal");
-const cancelProjectButton = document.getElementById("cancelProjectButton");
-const addProjectForm = document.getElementById("addProjectForm");
-
-const projectsGrid = document.getElementById("projectsGrid");
-
-const toastContainer = document.getElementById("toastContainer");
-
-const logoutButton = document.getElementById("logoutButton");
-
-const heroStartButton = document.getElementById("heroStartButton");
-const heroProjectsButton = document.getElementById("heroProjectsButton");
+const DOM = {};
 
 
 // ============================================================
@@ -93,59 +35,117 @@ const heroProjectsButton = document.getElementById("heroProjectsButton");
 
 document.addEventListener("DOMContentLoaded", function () {
 
+    initializeDOM();
+    initializeDefaultData();
     initializeApplication();
+    initializeEvents();
 
 });
 
 
-function initializeApplication() {
+// ============================================================
+// INITIALIZE DOM
+// ============================================================
 
-    loadDefaultData();
+function initializeDOM() {
 
-    registerNavigation();
+    DOM.appLoader = document.getElementById("appLoader");
+    DOM.app = document.getElementById("app");
 
-    registerSidebarEvents();
+    DOM.mainSidebar = document.getElementById("mainSidebar");
+    DOM.sidebarOverlay = document.getElementById("sidebarOverlay");
 
-    registerCommandEvents();
+    DOM.sidebarToggle = document.getElementById("sidebarToggle");
+    DOM.sidebarClose = document.getElementById("sidebarClose");
 
-    registerSearchEvents();
+    DOM.pageTitle = document.getElementById("pageTitle");
 
-    registerNotificationEvents();
+    DOM.commandInput = document.getElementById("commandInput");
+    DOM.executeCommandButton = document.getElementById("executeCommandButton");
+    DOM.clearCommandButton = document.getElementById("clearCommandButton");
 
-    registerUserMenuEvents();
+    DOM.quickCommandButtons = document.querySelectorAll(
+        ".quick-command, [data-command]"
+    );
 
-    registerProjectEvents();
+    DOM.globalSearchButton = document.getElementById("globalSearchButton");
+    DOM.globalSearchInput = document.getElementById("globalSearchInput");
 
-    registerHeroEvents();
+    DOM.searchModal = document.getElementById("searchModal");
+    DOM.closeSearchModal = document.getElementById("closeSearchModal");
+    DOM.searchResults = document.getElementById("searchResults");
 
-    registerKeyboardEvents();
+    DOM.notificationButton = document.getElementById("notificationButton");
+    DOM.notificationPanel = document.getElementById("notificationPanel");
+    DOM.closeNotificationPanel = document.getElementById(
+        "closeNotificationPanel"
+    );
 
-    renderProjects();
+    DOM.userMenuButton = document.getElementById("userMenuButton");
+    DOM.userMenu = document.getElementById("userMenu");
+    DOM.profileMenuButton = document.getElementById("profileMenuButton");
 
-    hideLoader();
+    DOM.addProjectButton = document.getElementById("addProjectButton");
+    DOM.addProjectModal = document.getElementById("addProjectModal");
+    DOM.closeAddProjectModal = document.getElementById(
+        "closeAddProjectModal"
+    );
+    DOM.cancelProjectButton = document.getElementById(
+        "cancelProjectButton"
+    );
+    DOM.addProjectForm = document.getElementById("addProjectForm");
 
-    console.log("Sanaullah AI Command Center initialized.");
+    DOM.projectsGrid = document.getElementById("projectsGrid");
+
+    DOM.toastContainer = document.getElementById("toastContainer");
+
+    DOM.logoutButton = document.getElementById("logoutButton");
+
+    DOM.heroStartButton = document.getElementById("heroStartButton");
+    DOM.heroProjectsButton = document.getElementById("heroProjectsButton");
 
 }
 
 
 // ============================================================
-// LOADER
+// APPLICATION START
 // ============================================================
 
-function hideLoader() {
+function initializeApplication() {
 
     setTimeout(function () {
 
-        if (appLoader) {
-            appLoader.classList.add("hidden");
+        if (DOM.appLoader) {
+            DOM.appLoader.classList.add("hidden");
         }
 
-        if (app) {
-            app.classList.add("ready");
+        if (DOM.app) {
+            DOM.app.classList.add("ready");
         }
 
-    }, 600);
+    }, 700);
+
+    renderProjects();
+    renderTasks();
+
+}
+
+
+// ============================================================
+// EVENT INITIALIZATION
+// ============================================================
+
+function initializeEvents() {
+
+    initializeNavigation();
+    initializeSidebar();
+    initializeCommandCenter();
+    initializeSearch();
+    initializeNotifications();
+    initializeUserMenu();
+    initializeProjects();
+    initializeHeroActions();
+    initializeKeyboardShortcuts();
 
 }
 
@@ -154,36 +154,21 @@ function hideLoader() {
 // NAVIGATION
 // ============================================================
 
-function registerNavigation() {
+function initializeNavigation() {
 
-    const navigationItems = document.querySelectorAll(".nav-item");
+    const navItems = document.querySelectorAll(
+        ".nav-item, [data-page-target]"
+    );
 
-    navigationItems.forEach(function (item) {
+    navItems.forEach(function (item) {
 
         item.addEventListener("click", function (event) {
 
             event.preventDefault();
 
-            const targetPage = item.getAttribute("data-page-target");
-
-            if (!targetPage) {
-                return;
-            }
-
-            navigateToPage(targetPage);
-
-        });
-
-    });
-
-
-    const pageButtons = document.querySelectorAll("[data-page-target]");
-
-    pageButtons.forEach(function (button) {
-
-        button.addEventListener("click", function (event) {
-
-            const targetPage = button.getAttribute("data-page-target");
+            const targetPage =
+                item.dataset.pageTarget ||
+                item.getAttribute("href")?.replace("#", "");
 
             if (!targetPage) {
                 return;
@@ -197,6 +182,10 @@ function registerNavigation() {
 
 }
 
+
+// ============================================================
+// NAVIGATE TO PAGE
+// ============================================================
 
 function navigateToPage(pageName) {
 
@@ -210,77 +199,47 @@ function navigateToPage(pageName) {
 
     });
 
-
     const targetSection = document.getElementById(pageName);
 
     if (targetSection) {
-
         targetSection.classList.add("active");
-
     }
 
-
-    const navigationItems = document.querySelectorAll(".nav-item");
-
-    navigationItems.forEach(function (item) {
-
-        item.classList.remove("active");
-
-        const target = item.getAttribute("data-page-target");
-
-        if (target === pageName) {
-
-            item.classList.add("active");
-
-        }
-
-    });
-
-
     updatePageTitle(pageName);
-
-    closeSidebar();
+    closeAllPanels();
 
 }
 
 
+// ============================================================
+// UPDATE PAGE TITLE
+// ============================================================
+
 function updatePageTitle(pageName) {
 
-    if (!pageTitle) {
+    if (!DOM.pageTitle) {
         return;
     }
-
 
     const titles = {
 
         dashboard: "Dashboard",
-
         assistant: "AI Assistant",
-
         tasks: "My Tasks",
-
         projects: "Projects",
-
         coding: "Coding Agent",
-
         web: "Web Agent",
-
         social: "Social Media",
-
         research: "Research Agent",
-
         memory: "AI Memory",
-
         integrations: "Integrations",
-
         activity: "Activity",
-
         settings: "Settings"
 
     };
 
-
-    pageTitle.textContent = titles[pageName] || "Dashboard";
+    DOM.pageTitle.textContent =
+        titles[pageName] || "Sanaullah AI Command Center";
 
 }
 
@@ -289,68 +248,68 @@ function updatePageTitle(pageName) {
 // SIDEBAR
 // ============================================================
 
-function registerSidebarEvents() {
+function initializeSidebar() {
 
-    if (sidebarToggle) {
+    if (DOM.sidebarToggle) {
 
-        sidebarToggle.addEventListener("click", function () {
-
+        DOM.sidebarToggle.addEventListener("click", function () {
             openSidebar();
-
         });
 
     }
 
+    if (DOM.sidebarClose) {
 
-    if (sidebarClose) {
-
-        sidebarClose.addEventListener("click", function () {
-
+        DOM.sidebarClose.addEventListener("click", function () {
             closeSidebar();
-
         });
 
     }
 
+    if (DOM.sidebarOverlay) {
 
-    if (sidebarOverlay) {
-
-        sidebarOverlay.addEventListener("click", function () {
-
+        DOM.sidebarOverlay.addEventListener("click", function () {
             closeSidebar();
-
         });
 
     }
 
 }
 
+
+// ============================================================
+// OPEN SIDEBAR
+// ============================================================
 
 function openSidebar() {
 
     AppState.sidebarOpen = true;
 
-    if (mainSidebar) {
-        mainSidebar.classList.add("open");
+    if (DOM.mainSidebar) {
+        DOM.mainSidebar.classList.add("open");
     }
 
-    if (sidebarOverlay) {
-        sidebarOverlay.classList.add("active");
+    if (DOM.sidebarOverlay) {
+        DOM.sidebarOverlay.classList.add("active");
     }
 
 }
 
 
+// ============================================================
+// CLOSE SIDEBAR
+// ============================================================
+
 function closeSidebar() {
 
     AppState.sidebarOpen = false;
 
-    if (mainSidebar) {
-        mainSidebar.classList.remove("open");
+    if (DOM.mainSidebar) {
+        DOM.mainSidebar.classList.remove("open");
     }
 
-    if (sidebarOverlay) {
-        sidebarOverlay.classList.remove("active");
+    if (DOM.sidebarOverlay) {
+        DOM.sidebarOverlay.classList.remove("active");
     }
 
 }
@@ -360,38 +319,40 @@ function closeSidebar() {
 // COMMAND CENTER
 // ============================================================
 
-function registerCommandEvents() {
+function initializeCommandCenter() {
 
-    if (executeCommandButton) {
+    if (DOM.executeCommandButton) {
 
-        executeCommandButton.addEventListener("click", function () {
+        DOM.executeCommandButton.addEventListener(
+            "click",
+            processUserCommand
+        );
 
-            processUserCommand();
+    }
+
+    if (DOM.clearCommandButton) {
+
+        DOM.clearCommandButton.addEventListener("click", function () {
+
+            if (DOM.commandInput) {
+                DOM.commandInput.value = "";
+                DOM.commandInput.focus();
+            }
 
         });
 
     }
 
+    if (DOM.commandInput) {
 
-    if (clearCommandButton) {
+        DOM.commandInput.addEventListener("keydown", function (event) {
 
-        clearCommandButton.addEventListener("click", function () {
-
-            clearCommand();
-
-        });
-
-    }
-
-
-    if (commandInput) {
-
-        commandInput.addEventListener("keydown", function (event) {
-
-            if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
+            if (
+                (event.ctrlKey || event.metaKey) &&
+                event.key === "Enter"
+            ) {
 
                 event.preventDefault();
-
                 processUserCommand();
 
             }
@@ -400,22 +361,18 @@ function registerCommandEvents() {
 
     }
 
-
-    const quickButtons = document.querySelectorAll(".quick-command");
-
-    quickButtons.forEach(function (button) {
+    DOM.quickCommandButtons.forEach(function (button) {
 
         button.addEventListener("click", function () {
 
-            const command = button.getAttribute("data-command");
+            const command =
+                button.dataset.command ||
+                button.textContent.trim();
 
-            if (!command || !commandInput) {
-                return;
+            if (DOM.commandInput) {
+                DOM.commandInput.value = command;
+                DOM.commandInput.focus();
             }
-
-            commandInput.value = command;
-
-            commandInput.focus();
 
         });
 
@@ -428,78 +385,64 @@ function registerCommandEvents() {
 // PROCESS USER COMMAND
 // ============================================================
 
-async function processUserCommand() {
+function processUserCommand() {
+
+    if (!DOM.commandInput) {
+        return;
+    }
+
+    const command = DOM.commandInput.value.trim();
+
+    if (!command) {
+
+        showToast(
+            "Please enter a command.",
+            "warning"
+        );
+
+        return;
+    }
 
     if (AppState.isProcessing) {
         return;
     }
 
-
-    if (!commandInput) {
-        return;
-    }
-
-
-    const command = commandInput.value.trim();
-
-
-    if (!command) {
-
-        showToast(
-            "Please enter a command first.",
-            "warning"
-        );
-
-        commandInput.focus();
-
-        return;
-    }
-
-
     AppState.isProcessing = true;
 
-    AppState.currentCommand = command;
+    showToast(
+        "Understanding your command...",
+        "info"
+    );
 
+    setTimeout(function () {
 
-    setCommandProcessingState(true);
+        try {
 
+            const result = commandEngine(command);
 
-    try {
+            showCommandResult(result);
+            saveTask(result);
+            addActivity(result);
 
-        const task = commandEngine(command);
+        } catch (error) {
 
-        AppState.currentTask = task;
+            console.error(
+                "Command processing error:",
+                error
+            );
 
-        showCommandResult(task);
+            showToast(
+                "Unable to process command.",
+                "error"
+            );
 
-        saveTask(task);
+        } finally {
 
-        addActivity(
-            "Command processed",
-            task.agent.name + " selected for task.",
-            "command"
-        );
+            AppState.isProcessing = false;
 
+        }
 
-        showToast(
-            "Command understood and planned successfully.",
-            "success"
-        );
-
-
-    } catch (error) {
-
-        console.error("Command Engine Error:", error);
-
-        showToast(
-            "Command could not be processed.",
-            "error"
-        );
-
-    }
-
-
-    setCommandProcessingState(false);
+    }, 300);
 
 }
 
@@ -510,210 +453,83 @@ async function processUserCommand() {
 
 function commandEngine(command) {
 
-    const normalizedCommand = normalizeCommand(command);
+    const understanding =
+        taskUnderstandingEngine(command);
 
+    const taskPlan =
+        createTaskPlan(
+            understanding.taskType,
+            understanding.action
+        );
 
-    const understanding = understandTask(
-        command,
-        normalizedCommand
-    );
+    const agent =
+        selectAgent(
+            understanding.taskType
+        );
 
+    const execution =
+        prepareExecution(
+            understanding
+        );
 
-    const plan = createTaskPlan(
-        command,
-        understanding
-    );
-
-
-    const agent = selectAgent(
-        understanding
-    );
-
-
-    const execution = prepareExecution(
-        command,
-        understanding,
-        plan,
-        agent
-    );
-
-
-    const result = createCommandResult(
+    return createCommandResult(
         command,
         understanding,
-        plan,
+        taskPlan,
         agent,
         execution
     );
-
-
-    return result;
 
 }
 
 
 // ============================================================
-// TASK UNDERSTANDING
+// TASK UNDERSTANDING ENGINE
+// PART 1
 // ============================================================
 
-function understandTask(command, normalizedCommand) {
+function taskUnderstandingEngine(command) {
 
-    let type = "general";
-    let action = "assist";
-    let priority = "normal";
+    const normalizedCommand =
+        normalizeCommand(command);
 
+    const taskType =
+        detectTaskType(normalizedCommand);
 
-    if (
-        containsAny(normalizedCommand, [
-            "website",
-            "web site",
-            "landing page",
-            "webpage",
-            "html",
-            "frontend",
-            "web app"
-        ])
-    ) {
+    const action =
+        detectAction(normalizedCommand);
 
-        type = "website";
+    const priority =
+        detectPriority(normalizedCommand);
 
-    }
+    const requirements =
+        extractRequirements(
+            command,
+            taskType
+        );
 
-
-    else if (
-        containsAny(normalizedCommand, [
-            "code",
-            "coding",
-            "javascript",
-            "python",
-            "google apps script",
-            "script",
-            "program"
-        ])
-    ) {
-
-        type = "coding";
-
-    }
-
-
-    else if (
-        containsAny(normalizedCommand, [
-            "research",
-            "research about",
-            "find information",
-            "search",
-            "analyze",
-            "market research"
-        ])
-    ) {
-
-        type = "research";
-
-    }
-
-
-    else if (
-        containsAny(normalizedCommand, [
-            "social media",
-            "facebook",
-            "instagram",
-            "linkedin",
-            "twitter",
-            "post",
-            "social post",
-            "caption"
-        ])
-    ) {
-
-        type = "social";
-
-    }
-
-
-    if (
-        containsAny(normalizedCommand, [
-            "create",
-            "build",
-            "make",
-            "develop",
-            "generate",
-            "write"
-        ])
-    ) {
-
-        action = "create";
-
-    }
-
-
-    else if (
-        containsAny(normalizedCommand, [
-            "fix",
-            "repair",
-            "debug",
-            "correct"
-        ])
-    ) {
-
-        action = "fix";
-
-    }
-
-
-    else if (
-        containsAny(normalizedCommand, [
-            "analyze",
-            "analyse",
-            "check",
-            "review"
-        ])
-    ) {
-
-        action = "analyze";
-
-    }
-
-
-    else if (
-        containsAny(normalizedCommand, [
-            "search",
-            "find",
-            "look for"
-        ])
-    ) {
-
-        action = "search";
-
-    }
-
-
-    if (
-        containsAny(normalizedCommand, [
-            "urgent",
-            "asap",
-            "immediately"
-        ])
-    ) {
-
-        priority = "high";
-
-    }
-
+    const entities =
+        extractBasicEntities(command);
 
     return {
 
         originalCommand: command,
 
-        type: type,
+        normalizedCommand: normalizedCommand,
+
+        taskType: taskType,
 
         action: action,
 
         priority: priority,
 
-        understood: true,
+        requirements: requirements,
 
-        timestamp: new Date().toISOString()
+        entities: entities,
+
+        understandingVersion: "1.0",
+
+        engine: "Task Understanding Engine"
 
     };
 
@@ -721,326 +537,552 @@ function understandTask(command, normalizedCommand) {
 
 
 // ============================================================
-// TASK PLANNING
+// NORMALIZE COMMAND
 // ============================================================
 
-function createTaskPlan(command, understanding) {
+function normalizeCommand(command) {
 
-    let steps = [];
-
-
-    if (understanding.type === "website") {
-
-        steps = [
-
-            "Understand website requirements",
-
-            "Define website structure",
-
-            "Prepare page components",
-
-            "Create frontend implementation",
-
-            "Validate website structure",
-
-            "Test final result"
-
-        ];
-
-    }
-
-
-    else if (understanding.type === "coding") {
-
-        steps = [
-
-            "Understand coding requirements",
-
-            "Analyze existing code",
-
-            "Prepare implementation plan",
-
-            "Write or modify code",
-
-            "Check for errors",
-
-            "Validate final code"
-
-        ];
-
-    }
-
-
-    else if (understanding.type === "research") {
-
-        steps = [
-
-            "Understand research question",
-
-            "Identify required information",
-
-            "Collect relevant information",
-
-            "Analyze findings",
-
-            "Prepare structured result",
-
-            "Validate findings"
-
-        ];
-
-    }
-
-
-    else if (understanding.type === "social") {
-
-        steps = [
-
-            "Understand social media objective",
-
-            "Identify platform requirements",
-
-            "Prepare content",
-
-            "Review content",
-
-            "Prepare final result"
-
-        ];
-
-    }
-
-
-    else {
-
-        steps = [
-
-            "Understand user request",
-
-            "Determine required action",
-
-            "Prepare task strategy",
-
-            "Execute required work",
-
-            "Validate result"
-
-        ];
-
-    }
-
-
-    return {
-
-        totalSteps: steps.length,
-
-        completedSteps: 0,
-
-        steps: steps,
-
-        status: "planned"
-
-    };
+    return command
+        .toLowerCase()
+        .trim()
+        .replace(/\s+/g, " ");
 
 }
 
 
 // ============================================================
-// AGENT SELECTION
+// DETECT TASK TYPE
 // ============================================================
 
-function selectAgent(understanding) {
-
-    let agent = {
-
-        id: "general-agent",
-
-        name: "General Assistant",
-
-        type: "general",
-
-        status: "ready"
-
-    };
-
-
-    if (understanding.type === "website") {
-
-        agent = {
-
-            id: "web-agent",
-
-            name: "Web Agent",
-
-            type: "web",
-
-            status: "ready"
-
-        };
-
-    }
-
-
-    else if (understanding.type === "coding") {
-
-        agent = {
-
-            id: "coding-agent",
-
-            name: "Coding Agent",
-
-            type: "coding",
-
-            status: "ready"
-
-        };
-
-    }
-
-
-    else if (understanding.type === "research") {
-
-        agent = {
-
-            id: "research-agent",
-
-            name: "Research Agent",
-
-            type: "research",
-
-            status: "ready"
-
-        };
-
-    }
-
-
-    else if (understanding.type === "social") {
-
-        agent = {
-
-            id: "social-agent",
-
-            name: "Social Media Agent",
-
-            type: "social",
-
-            status: "ready"
-
-        };
-
-    }
-
-
-    return agent;
-
-}
-
-
-// ============================================================
-// EXECUTION PREPARATION
-// ============================================================
-
-function prepareExecution(
-    command,
-    understanding,
-    plan,
-    agent
-) {
-
-    return {
-
-        status: "ready",
-
-        mode: "simulation",
-
-        agent: agent.id,
-
-        message:
-            "Execution engine is ready. Real tools will be connected in the next stage.",
-
-        requiresApproval: checkApprovalRequired(
-            understanding
-        )
-
-    };
-
-}
-
-
-// ============================================================
-// APPROVAL CHECK
-// ============================================================
-
-function checkApprovalRequired(understanding) {
-
-    const sensitiveActions = [
-
-        "send",
-
-        "delete",
-
-        "publish",
-
-        "payment",
-
-        "purchase",
-
-        "transfer",
-
-        "remove"
-
+function detectTaskType(command) {
+
+    const websiteKeywords = [
+        "website",
+        "web site",
+        "webpage",
+        "landing page",
+        "html",
+        "css",
+        "frontend",
+        "web app"
     ];
 
+    const codingKeywords = [
+        "code",
+        "coding",
+        "script",
+        "javascript",
+        "python",
+        "google apps script",
+        "api",
+        "function",
+        "program"
+    ];
 
-    const actionText = understanding.originalCommand.toLowerCase();
+    const researchKeywords = [
+        "research",
+        "analyze",
+        "analysis",
+        "study",
+        "investigate",
+        "find information",
+        "research trends"
+    ];
+
+    const socialKeywords = [
+        "instagram",
+        "facebook",
+        "linkedin",
+        "social media",
+        "post",
+        "caption",
+        "reel",
+        "social"
+    ];
+
+    if (containsKeyword(command, websiteKeywords)) {
+        return "Website";
+    }
+
+    if (containsKeyword(command, codingKeywords)) {
+        return "Coding";
+    }
+
+    if (containsKeyword(command, researchKeywords)) {
+        return "Research";
+    }
+
+    if (containsKeyword(command, socialKeywords)) {
+        return "Social";
+    }
+
+    return "General";
+
+}
 
 
-    for (let i = 0; i < sensitiveActions.length; i++) {
+// ============================================================
+// DETECT ACTION
+// ============================================================
 
-        if (actionText.includes(sensitiveActions[i])) {
+function detectAction(command) {
 
-            return true;
+    const createKeywords = [
+        "create",
+        "build",
+        "make",
+        "develop",
+        "write",
+        "generate",
+        "design"
+    ];
+
+    const fixKeywords = [
+        "fix",
+        "repair",
+        "debug",
+        "solve",
+        "correct"
+    ];
+
+    const searchKeywords = [
+        "search",
+        "find",
+        "research",
+        "look up",
+        "investigate"
+    ];
+
+    const analyzeKeywords = [
+        "analyze",
+        "analyse",
+        "review",
+        "check",
+        "evaluate"
+    ];
+
+    if (containsKeyword(command, fixKeywords)) {
+        return "Fix";
+    }
+
+    if (containsKeyword(command, searchKeywords)) {
+        return "Search";
+    }
+
+    if (containsKeyword(command, analyzeKeywords)) {
+        return "Analyze";
+    }
+
+    if (containsKeyword(command, createKeywords)) {
+        return "Create";
+    }
+
+    return "Understand";
+
+}
+
+
+// ============================================================
+// DETECT PRIORITY
+// ============================================================
+
+function detectPriority(command) {
+
+    const urgentKeywords = [
+        "urgent",
+        "urgently",
+        "asap",
+        "immediately",
+        "emergency",
+        "high priority"
+    ];
+
+    if (containsKeyword(command, urgentKeywords)) {
+        return "High";
+    }
+
+    return "Normal";
+
+}
+
+
+// ============================================================
+// EXTRACT REQUIREMENTS
+// ============================================================
+
+function extractRequirements(command, taskType) {
+
+    const requirements = [];
+
+    const lowerCommand =
+        command.toLowerCase();
+
+    if (
+        lowerCommand.includes("home page") ||
+        lowerCommand.includes("homepage") ||
+        lowerCommand.includes("home")
+    ) {
+        requirements.push("Home page");
+    }
+
+    if (
+        lowerCommand.includes("about page") ||
+        lowerCommand.includes("about")
+    ) {
+        requirements.push("About page");
+    }
+
+    if (
+        lowerCommand.includes("services page") ||
+        lowerCommand.includes("services")
+    ) {
+        requirements.push("Services page");
+    }
+
+    if (
+        lowerCommand.includes("contact page") ||
+        lowerCommand.includes("contact")
+    ) {
+        requirements.push("Contact page");
+    }
+
+    if (
+        lowerCommand.includes("modern")
+    ) {
+        requirements.push("Modern design");
+    }
+
+    if (
+        lowerCommand.includes("professional")
+    ) {
+        requirements.push("Professional design");
+    }
+
+    if (
+        lowerCommand.includes("responsive")
+    ) {
+        requirements.push("Responsive design");
+    }
+
+    if (
+        lowerCommand.includes("mobile")
+    ) {
+        requirements.push("Mobile support");
+    }
+
+    if (
+        lowerCommand.includes("email automation")
+    ) {
+        requirements.push("Email automation");
+    }
+
+    if (
+        lowerCommand.includes("google apps script")
+    ) {
+        requirements.push("Google Apps Script");
+    }
+
+    if (
+        lowerCommand.includes("instagram")
+    ) {
+        requirements.push("Instagram");
+    }
+
+    if (
+        lowerCommand.includes("facebook")
+    ) {
+        requirements.push("Facebook");
+    }
+
+    if (
+        lowerCommand.includes("linkedin")
+    ) {
+        requirements.push("LinkedIn");
+    }
+
+    return uniqueArray(requirements);
+
+}
+
+
+// ============================================================
+// EXTRACT BASIC ENTITIES
+// ============================================================
+
+function extractBasicEntities(command) {
+
+    const entities = [];
+
+    const platforms = [
+        "Instagram",
+        "Facebook",
+        "LinkedIn",
+        "Google",
+        "GitHub",
+        "WhatsApp",
+        "Telegram"
+    ];
+
+    platforms.forEach(function (platform) {
+
+        if (
+            command
+                .toLowerCase()
+                .includes(platform.toLowerCase())
+        ) {
+
+            entities.push(platform);
 
         }
 
-    }
+    });
 
-
-    return false;
+    return uniqueArray(entities);
 
 }
 
 
 // ============================================================
-// COMMAND RESULT
+// KEYWORD CHECK
+// ============================================================
+
+function containsKeyword(command, keywords) {
+
+    return keywords.some(function (keyword) {
+
+        return command.includes(
+            keyword.toLowerCase()
+        );
+
+    });
+
+}
+
+
+// ============================================================
+// UNIQUE ARRAY
+// ============================================================
+
+function uniqueArray(items) {
+
+    return [...new Set(items)];
+
+}
+
+
+// ============================================================
+// CREATE TASK PLAN
+// ============================================================
+
+function createTaskPlan(taskType, action) {
+
+    if (taskType === "Website") {
+
+        return [
+            "Understand website requirements",
+            "Define website structure",
+            "Select Web Agent",
+            "Prepare website implementation",
+            "Test website",
+            "Prepare final result"
+        ];
+
+    }
+
+    if (taskType === "Coding") {
+
+        return [
+            "Understand coding requirements",
+            "Define technical solution",
+            "Select Coding Agent",
+            "Prepare code",
+            "Test and validate code",
+            "Prepare final result"
+        ];
+
+    }
+
+    if (taskType === "Research") {
+
+        return [
+            "Understand research question",
+            "Define research scope",
+            "Select Research Agent",
+            "Collect relevant information",
+            "Analyze findings",
+            "Prepare research result"
+        ];
+
+    }
+
+    if (taskType === "Social") {
+
+        return [
+            "Understand social media objective",
+            "Identify platform and audience",
+            "Select Social Media Agent",
+            "Prepare content",
+            "Review content"
+        ];
+
+    }
+
+    return [
+        "Understand user request",
+        "Define required actions",
+        "Select suitable agent",
+        "Prepare execution",
+        "Validate result",
+        "Return final result"
+    ];
+
+}
+
+
+// ============================================================
+// SELECT AGENT
+// ============================================================
+
+function selectAgent(taskType) {
+
+    if (taskType === "Website") {
+        return "Web Agent";
+    }
+
+    if (taskType === "Coding") {
+        return "Coding Agent";
+    }
+
+    if (taskType === "Research") {
+        return "Research Agent";
+    }
+
+    if (taskType === "Social") {
+        return "Social Media Agent";
+    }
+
+    return "General Assistant";
+
+}
+
+
+// ============================================================
+// PREPARE EXECUTION
+// ============================================================
+
+function prepareExecution(understanding) {
+
+    const approval =
+        checkApprovalRequired(
+            understanding.originalCommand
+        );
+
+    return {
+
+        mode: "simulation",
+
+        status: "READY",
+
+        approvalRequired: approval.required,
+
+        approvalReason: approval.reason,
+
+        message:
+            "Execution engine ready. Real tools will be connected in a later stage."
+
+    };
+
+}
+
+
+// ============================================================
+// CHECK APPROVAL
+// ============================================================
+
+function checkApprovalRequired(command) {
+
+    const sensitiveKeywords = [
+        "send",
+        "delete",
+        "publish",
+        "payment",
+        "purchase",
+        "transfer",
+        "remove"
+    ];
+
+    const normalizedCommand =
+        normalizeCommand(command);
+
+    const requiresApproval =
+        containsKeyword(
+            normalizedCommand,
+            sensitiveKeywords
+        );
+
+    if (requiresApproval) {
+
+        return {
+
+            required: true,
+
+            reason:
+                "This action may affect an external system or irreversible data."
+
+        };
+
+    }
+
+    return {
+
+        required: false,
+
+        reason: "No approval required for planning."
+
+    };
+
+}
+
+
+// ============================================================
+// CREATE COMMAND RESULT
 // ============================================================
 
 function createCommandResult(
     command,
     understanding,
-    plan,
+    taskPlan,
     agent,
     execution
 ) {
 
     return {
 
-        id: createID("TASK"),
+        success: true,
 
         command: command,
 
-        understanding: understanding,
+        taskType: understanding.taskType,
 
-        plan: plan,
+        action: understanding.action,
 
-        agent: agent,
+        priority: understanding.priority,
+
+        requirements: understanding.requirements,
+
+        entities: understanding.entities,
+
+        normalizedCommand:
+            understanding.normalizedCommand,
+
+        selectedAgent: agent,
+
+        plan: taskPlan,
 
         execution: execution,
 
-        status: "ready",
-
-        createdAt: new Date().toISOString()
+        timestamp:
+            new Date().toISOString()
 
     };
 
@@ -1051,46 +1093,35 @@ function createCommandResult(
 // SHOW COMMAND RESULT
 // ============================================================
 
-function showCommandResult(task) {
+function showCommandResult(result) {
 
-    let resultBox = document.getElementById(
-        "commandEngineResult"
-    );
+    let container =
+        document.getElementById(
+            "commandResult"
+        );
 
+    if (!container) {
 
-    if (!resultBox) {
+        container =
+            document.createElement("div");
 
-        resultBox = document.createElement("div");
+        container.id = "commandResult";
+        container.className = "command-result";
 
-        resultBox.id = "commandEngineResult";
+        if (DOM.commandInput) {
 
-        resultBox.className = "command-engine-result";
-
-
-        const commandArea =
-            commandInput ?
-            commandInput.closest(".command-center") :
-            null;
-
-
-        if (commandArea) {
-
-            commandArea.appendChild(resultBox);
-
-        } else if (commandInput) {
-
-            commandInput.parentElement.appendChild(
-                resultBox
-            );
+            DOM.commandInput
+                .parentElement
+                .appendChild(container);
 
         }
 
     }
 
+    container.innerHTML =
+        buildCommandResultHTML(result);
 
-    resultBox.innerHTML = buildCommandResultHTML(task);
-
-    resultBox.classList.add("visible");
+    container.classList.add("active");
 
 }
 
@@ -1099,163 +1130,127 @@ function showCommandResult(task) {
 // BUILD COMMAND RESULT HTML
 // ============================================================
 
-function buildCommandResultHTML(task) {
+function buildCommandResultHTML(result) {
 
-    const understanding = task.understanding;
+    const requirements =
+        result.requirements.length
+            ? result.requirements
+                .map(function (item) {
+                    return "<li>" +
+                        escapeHTML(item) +
+                        "</li>";
+                })
+                .join("")
+            : "<li>No specific requirements detected.</li>";
 
-    const plan = task.plan;
+    const entities =
+        result.entities.length
+            ? result.entities
+                .map(function (item) {
+                    return "<li>" +
+                        escapeHTML(item) +
+                        "</li>";
+                })
+                .join("")
+            : "<li>No specific entities detected.</li>";
 
-    const agent = task.agent;
+    const plan =
+        result.plan
+            .map(function (step, index) {
 
-    const execution = task.execution;
+                return "<li>" +
+                    (index + 1) +
+                    ". " +
+                    escapeHTML(step) +
+                    "</li>";
 
-
-    let stepsHTML = "";
-
-
-    plan.steps.forEach(function (step, index) {
-
-        stepsHTML += `
-            <div class="command-step">
-                <span class="step-number">${index + 1}</span>
-                <span class="step-text">${escapeHTML(step)}</span>
-            </div>
-        `;
-
-    });
-
+            })
+            .join("");
 
     return `
 
         <div class="command-result-header">
 
             <div>
-
-                <small>COMMAND ENGINE</small>
-
-                <h3>Task Understood</h3>
-
+                <strong>Task Understanding Complete</strong>
             </div>
 
-            <span class="command-status">
+            <div class="result-status">
                 READY
-            </span>
+            </div>
 
         </div>
-
-
-        <div class="command-result-command">
-
-            <strong>Your Command</strong>
-
-            <p>${escapeHTML(task.command)}</p>
-
-        </div>
-
 
         <div class="command-result-grid">
 
-            <div class="result-item">
-
-                <small>Task Type</small>
-
-                <strong>
-                    ${escapeHTML(
-                        formatTaskType(understanding.type)
-                    )}
-                </strong>
-
+            <div>
+                <strong>Task Type</strong>
+                <span>${escapeHTML(result.taskType)}</span>
             </div>
 
-
-            <div class="result-item">
-
-                <small>Action</small>
-
-                <strong>
-                    ${escapeHTML(
-                        formatTaskType(understanding.action)
-                    )}
-                </strong>
-
+            <div>
+                <strong>Action</strong>
+                <span>${escapeHTML(result.action)}</span>
             </div>
 
-
-            <div class="result-item">
-
-                <small>Priority</small>
-
-                <strong>
-                    ${escapeHTML(
-                        formatTaskType(understanding.priority)
-                    )}
-                </strong>
-
+            <div>
+                <strong>Priority</strong>
+                <span>${escapeHTML(result.priority)}</span>
             </div>
 
-
-            <div class="result-item">
-
-                <small>Selected Agent</small>
-
-                <strong>
-                    ${escapeHTML(agent.name)}
-                </strong>
-
+            <div>
+                <strong>Selected Agent</strong>
+                <span>${escapeHTML(result.selectedAgent)}</span>
             </div>
 
         </div>
 
+        <div class="command-result-section">
 
-        <div class="command-plan">
+            <strong>Requirements</strong>
 
-            <div class="command-plan-title">
-
-                <strong>Task Plan</strong>
-
-                <span>
-                    ${plan.totalSteps} Steps
-                </span>
-
-            </div>
-
-
-            <div class="command-steps">
-
-                ${stepsHTML}
-
-            </div>
+            <ul>
+                ${requirements}
+            </ul>
 
         </div>
 
+        <div class="command-result-section">
 
-        <div class="command-execution">
+            <strong>Entities</strong>
 
-            <strong>Execution Status</strong>
+            <ul>
+                ${entities}
+            </ul>
 
-            <p>
-                ${escapeHTML(execution.message)}
-            </p>
+        </div>
 
+        <div class="command-result-section">
+
+            <strong>Task Plan</strong>
+
+            <ol>
+                ${plan}
+            </ol>
+
+        </div>
+
+        <div class="command-result-footer">
+
+            <strong>Execution:</strong>
+
+            ${escapeHTML(
+                result.execution.message
+            )}
+
+            <br>
+
+            <strong>Approval:</strong>
 
             ${
-                execution.requiresApproval
-                ?
-                `
-                <div class="approval-warning">
-
-                    Approval Required
-
-                </div>
-                `
-                :
-                `
-                <div class="approval-ready">
-
-                    No approval required for planning
-
-                </div>
-                `
+                result.execution.approvalRequired
+                    ? "Required"
+                    : "Not Required"
             }
 
         </div>
@@ -1266,314 +1261,77 @@ function buildCommandResultHTML(task) {
 
 
 // ============================================================
-// TASK TYPE FORMATTER
+// SAVE TASK
 // ============================================================
 
-function formatTaskType(value) {
+function saveTask(result) {
 
-    if (!value) {
-        return "";
-    }
+    const task = {
 
+        id:
+            "TASK-" +
+            Date.now(),
 
-    return value
-        .replace(/-/g, " ")
-        .replace(/\b\w/g, function (letter) {
+        command: result.command,
 
-            return letter.toUpperCase();
+        type: result.taskType,
 
-        });
+        action: result.action,
+
+        priority: result.priority,
+
+        agent: result.selectedAgent,
+
+        status: "Ready",
+
+        createdAt:
+            result.timestamp
+
+    };
+
+    AppState.tasks.unshift(task);
+
+    renderTasks();
 
 }
 
 
 // ============================================================
-// COMMAND PROCESSING STATE
+// RENDER TASKS
 // ============================================================
 
-function setCommandProcessingState(isProcessing) {
-
-    AppState.isProcessing = isProcessing;
-
-
-    if (executeCommandButton) {
-
-        executeCommandButton.disabled = isProcessing;
-
-
-        if (isProcessing) {
-
-            executeCommandButton.dataset.originalText =
-                executeCommandButton.textContent;
-
-            executeCommandButton.textContent =
-                "Processing...";
-
-        } else {
-
-            executeCommandButton.textContent =
-                executeCommandButton.dataset.originalText ||
-                "Execute Command";
-
-        }
-
-    }
-
-
-    if (commandInput) {
-
-        commandInput.disabled = isProcessing;
-
-    }
-
-}
-
-
-// ============================================================
-// CLEAR COMMAND
-// ============================================================
-
-function clearCommand() {
-
-    if (commandInput) {
-
-        commandInput.value = "";
-
-        commandInput.focus();
-
-    }
-
-
-    const resultBox = document.getElementById(
-        "commandEngineResult"
-    );
-
-
-    if (resultBox) {
-
-        resultBox.classList.remove("visible");
-
-    }
-
-
-    AppState.currentCommand = "";
-
-    AppState.currentTask = null;
-
-}
-
-
-// ============================================================
-// SEARCH
-// ============================================================
-
-function registerSearchEvents() {
-
-    if (globalSearchButton) {
-
-        globalSearchButton.addEventListener("click", function () {
-
-            openSearchModal();
-
-        });
-
-    }
-
-
-    if (closeSearchModal) {
-
-        closeSearchModal.addEventListener("click", function () {
-
-            closeSearch();
-
-        });
-
-    }
-
-
-    if (globalSearchInput) {
-
-        globalSearchInput.addEventListener("input", function () {
-
-            performSearch(
-                globalSearchInput.value.trim()
-            );
-
-        });
-
-    }
-
-}
-
-
-function openSearchModal() {
-
-    AppState.searchOpen = true;
-
-    if (searchModal) {
-
-        searchModal.classList.add("active");
-
-    }
-
-
-    if (globalSearchInput) {
-
-        globalSearchInput.focus();
-
-    }
-
-}
-
-
-function closeSearch() {
-
-    AppState.searchOpen = false;
-
-    if (searchModal) {
-
-        searchModal.classList.remove("active");
-
-    }
-
-}
-
-
-function performSearch(query) {
-
-    if (!searchResults) {
-        return;
-    }
-
-
-    if (!query) {
-
-        searchResults.innerHTML = "";
-
-        return;
-
-    }
-
-
-    const searchableItems = [
-
-        {
-            title: "Dashboard",
-            page: "dashboard"
-        },
-
-        {
-            title: "AI Assistant",
-            page: "assistant"
-        },
-
-        {
-            title: "My Tasks",
-            page: "tasks"
-        },
-
-        {
-            title: "Projects",
-            page: "projects"
-        },
-
-        {
-            title: "Coding Agent",
-            page: "coding"
-        },
-
-        {
-            title: "Web Agent",
-            page: "web"
-        },
-
-        {
-            title: "Social Media",
-            page: "social"
-        },
-
-        {
-            title: "Research Agent",
-            page: "research"
-        },
-
-        {
-            title: "AI Memory",
-            page: "memory"
-        },
-
-        {
-            title: "Integrations",
-            page: "integrations"
-        },
-
-        {
-            title: "Activity",
-            page: "activity"
-        },
-
-        {
-            title: "Settings",
-            page: "settings"
-        }
-
-    ];
-
-
-    const results = searchableItems.filter(function (item) {
-
-        return item.title
-            .toLowerCase()
-            .includes(query.toLowerCase());
-
-    });
-
-
-    if (results.length === 0) {
-
-        searchResults.innerHTML =
-            "<p>No results found.</p>";
-
-        return;
-
-    }
-
-
-    searchResults.innerHTML = results.map(function (item) {
-
-        return `
-
-            <button
-                class="search-result-item"
-                data-page-target="${item.page}"
-            >
-
-                ${escapeHTML(item.title)}
-
-            </button>
-
-        `;
-
-    }).join("");
-
-
-    const resultButtons =
-        searchResults.querySelectorAll(
-            "[data-page-target]"
+function renderTasks() {
+
+    const taskContainers =
+        document.querySelectorAll(
+            "[data-task-list]"
         );
 
+    taskContainers.forEach(function (container) {
 
-    resultButtons.forEach(function (button) {
+        container.innerHTML =
+            AppState.tasks
+                .slice(0, 5)
+                .map(function (task) {
 
-        button.addEventListener("click", function () {
+                    return `
 
-            navigateToPage(
-                button.getAttribute("data-page-target")
-            );
+                        <div class="task-item">
 
-            closeSearch();
+                            <strong>
+                                ${escapeHTML(task.command)}
+                            </strong>
 
-        });
+                            <span>
+                                ${escapeHTML(task.agent)}
+                            </span>
+
+                        </div>
+
+                    `;
+
+                })
+                .join("");
 
     });
 
@@ -1581,242 +1339,70 @@ function performSearch(query) {
 
 
 // ============================================================
-// NOTIFICATIONS
+// ACTIVITY LOG
 // ============================================================
 
-function registerNotificationEvents() {
+function addActivity(result) {
 
-    if (notificationButton) {
+    const activity = {
 
-        notificationButton.addEventListener(
-            "click",
-            function (event) {
+        id:
+            "ACT-" +
+            Date.now(),
 
-                event.stopPropagation();
+        message:
+            "Command understood as " +
+            result.taskType +
+            " task.",
 
-                toggleNotificationPanel();
+        timestamp:
+            result.timestamp
 
-            }
-        );
+    };
 
-    }
-
-
-    if (closeNotificationPanel) {
-
-        closeNotificationPanel.addEventListener(
-            "click",
-            function () {
-
-                closeNotifications();
-
-            }
-        );
-
-    }
-
-}
-
-
-function toggleNotificationPanel() {
-
-    AppState.notificationOpen =
-        !AppState.notificationOpen;
-
-
-    if (notificationPanel) {
-
-        notificationPanel.classList.toggle(
-            "active",
-            AppState.notificationOpen
-        );
-
-    }
-
-
-    if (AppState.notificationOpen) {
-
-        closeUserMenu();
-
-    }
-
-}
-
-
-function closeNotifications() {
-
-    AppState.notificationOpen = false;
-
-    if (notificationPanel) {
-
-        notificationPanel.classList.remove(
-            "active"
-        );
-
-    }
+    AppState.activity.unshift(activity);
 
 }
 
 
 // ============================================================
-// USER MENU
+// PROJECTS
 // ============================================================
 
-function registerUserMenuEvents() {
+function initializeProjects() {
 
-    if (userMenuButton) {
+    if (DOM.addProjectButton) {
 
-        userMenuButton.addEventListener(
+        DOM.addProjectButton.addEventListener(
             "click",
-            function (event) {
-
-                event.stopPropagation();
-
-                toggleUserMenu();
-
-            }
+            openAddProjectModal
         );
 
     }
 
+    if (DOM.closeAddProjectModal) {
 
-    if (profileMenuButton) {
-
-        profileMenuButton.addEventListener(
+        DOM.closeAddProjectModal.addEventListener(
             "click",
-            function () {
-
-                toggleUserMenu();
-
-            }
+            closeAddProjectModal
         );
 
     }
 
+    if (DOM.cancelProjectButton) {
 
-    if (logoutButton) {
-
-        logoutButton.addEventListener(
+        DOM.cancelProjectButton.addEventListener(
             "click",
-            function () {
-
-                logoutUser();
-
-            }
+            closeAddProjectModal
         );
 
     }
 
-}
+    if (DOM.addProjectForm) {
 
-
-function toggleUserMenu() {
-
-    AppState.userMenuOpen =
-        !AppState.userMenuOpen;
-
-
-    if (userMenu) {
-
-        userMenu.classList.toggle(
-            "active",
-            AppState.userMenuOpen
-        );
-
-    }
-
-
-    if (AppState.userMenuOpen) {
-
-        closeNotifications();
-
-    }
-
-}
-
-
-function closeUserMenu() {
-
-    AppState.userMenuOpen = false;
-
-    if (userMenu) {
-
-        userMenu.classList.remove("active");
-
-    }
-
-}
-
-
-function logoutUser() {
-
-    showToast(
-        "Logout system will be connected later.",
-        "info"
-    );
-
-}
-
-
-// ============================================================
-// PROJECT SYSTEM
-// ============================================================
-
-function registerProjectEvents() {
-
-    if (addProjectButton) {
-
-        addProjectButton.addEventListener(
-            "click",
-            function () {
-
-                openProjectModal();
-
-            }
-        );
-
-    }
-
-
-    if (closeAddProjectModal) {
-
-        closeAddProjectModal.addEventListener(
-            "click",
-            function () {
-
-                closeProjectModal();
-
-            }
-        );
-
-    }
-
-
-    if (cancelProjectButton) {
-
-        cancelProjectButton.addEventListener(
-            "click",
-            function () {
-
-                closeProjectModal();
-
-            }
-        );
-
-    }
-
-
-    if (addProjectForm) {
-
-        addProjectForm.addEventListener(
+        DOM.addProjectForm.addEventListener(
             "submit",
-            function (event) {
-
-                event.preventDefault();
-
-                createProject();
-
-            }
+            createProject
         );
 
     }
@@ -1824,52 +1410,59 @@ function registerProjectEvents() {
 }
 
 
-function openProjectModal() {
+// ============================================================
+// OPEN PROJECT MODAL
+// ============================================================
+
+function openAddProjectModal() {
 
     AppState.addProjectOpen = true;
 
-    if (addProjectModal) {
-
-        addProjectModal.classList.add("active");
-
+    if (DOM.addProjectModal) {
+        DOM.addProjectModal.classList.add("active");
     }
 
 }
 
 
-function closeProjectModal() {
+// ============================================================
+// CLOSE PROJECT MODAL
+// ============================================================
+
+function closeAddProjectModal() {
 
     AppState.addProjectOpen = false;
 
-    if (addProjectModal) {
-
-        addProjectModal.classList.remove("active");
-
+    if (DOM.addProjectModal) {
+        DOM.addProjectModal.classList.remove("active");
     }
 
 }
 
 
-function createProject() {
+// ============================================================
+// CREATE PROJECT
+// ============================================================
 
-    if (!addProjectForm) {
+function createProject(event) {
+
+    event.preventDefault();
+
+    if (!DOM.addProjectForm) {
         return;
     }
 
-
     const formData =
-        new FormData(addProjectForm);
+        new FormData(DOM.addProjectForm);
 
-
-    const projectName =
+    const name =
         formData.get("projectName") ||
         formData.get("name");
 
-
-    if (!projectName) {
+    if (!name) {
 
         showToast(
-            "Please enter a project name.",
+            "Project name is required.",
             "warning"
         );
 
@@ -1877,38 +1470,28 @@ function createProject() {
 
     }
 
+    AppState.projects.push({
 
-    const project = {
+        id:
+            "PROJECT-" +
+            Date.now(),
 
-        id: createID("PROJECT"),
+        name:
+            name,
 
-        name: projectName,
-
-        description:
-            formData.get("description") ||
-            "New AI Command Center project.",
+        status:
+            "Active",
 
         createdAt:
             new Date().toISOString()
 
-    };
-
-
-    AppState.projects.unshift(project);
+    });
 
     renderProjects();
 
-    addActivity(
-        "Project created",
-        project.name + " was added.",
-        "project"
-    );
+    closeAddProjectModal();
 
-
-    addProjectForm.reset();
-
-    closeProjectModal();
-
+    DOM.addProjectForm.reset();
 
     showToast(
         "Project created successfully.",
@@ -1924,77 +1507,239 @@ function createProject() {
 
 function renderProjects() {
 
-    if (!projectsGrid) {
+    if (!DOM.projectsGrid) {
         return;
     }
 
-
-    if (AppState.projects.length === 0) {
-
-        projectsGrid.innerHTML =
-            "<p>No projects available.</p>";
-
+    if (!AppState.projects.length) {
         return;
-
     }
 
+    DOM.projectsGrid.innerHTML =
+        AppState.projects
+            .map(function (project) {
 
-    projectsGrid.innerHTML =
-        AppState.projects.map(function (project) {
+                return `
 
-            return `
-
-                <div class="project-card">
-
-                    <div class="project-card-icon">
-
-                        <span>●</span>
-
-                    </div>
-
-
-                    <div class="project-card-content">
+                    <div class="project-card">
 
                         <h3>
                             ${escapeHTML(project.name)}
                         </h3>
 
-                        <p>
-                            ${escapeHTML(project.description)}
-                        </p>
+                        <span>
+                            ${escapeHTML(project.status)}
+                        </span>
 
                     </div>
 
-                </div>
+                `;
 
-            `;
-
-        }).join("");
+            })
+            .join("");
 
 }
 
 
 // ============================================================
-// HERO BUTTONS
+// DEFAULT DATA
 // ============================================================
 
-function registerHeroEvents() {
+function initializeDefaultData() {
 
-    if (heroStartButton) {
+    AppState.projects = [
 
-        heroStartButton.addEventListener(
+        {
+            id: "PROJECT-001",
+            name: "Sanaullah AI Command Center",
+            status: "Active",
+            createdAt:
+                new Date().toISOString()
+        }
+
+    ];
+
+}
+
+
+// ============================================================
+// SEARCH
+// ============================================================
+
+function initializeSearch() {
+
+    if (DOM.globalSearchButton) {
+
+        DOM.globalSearchButton.addEventListener(
+            "click",
+            openSearch
+        );
+
+    }
+
+    if (DOM.closeSearchModal) {
+
+        DOM.closeSearchModal.addEventListener(
+            "click",
+            closeSearch
+        );
+
+    }
+
+    if (DOM.globalSearchInput) {
+
+        DOM.globalSearchInput.addEventListener(
+            "input",
+            performSearch
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// OPEN SEARCH
+// ============================================================
+
+function openSearch() {
+
+    AppState.searchOpen = true;
+
+    if (DOM.searchModal) {
+        DOM.searchModal.classList.add("active");
+    }
+
+    if (DOM.globalSearchInput) {
+        DOM.globalSearchInput.focus();
+    }
+
+}
+
+
+// ============================================================
+// CLOSE SEARCH
+// ============================================================
+
+function closeSearch() {
+
+    AppState.searchOpen = false;
+
+    if (DOM.searchModal) {
+        DOM.searchModal.classList.remove("active");
+    }
+
+}
+
+
+// ============================================================
+// PERFORM SEARCH
+// ============================================================
+
+function performSearch() {
+
+    if (!DOM.globalSearchInput) {
+        return;
+    }
+
+    const query =
+        DOM.globalSearchInput.value
+            .trim()
+            .toLowerCase();
+
+    if (!DOM.searchResults) {
+        return;
+    }
+
+    if (!query) {
+
+        DOM.searchResults.innerHTML =
+            "<p>Start typing to search.</p>";
+
+        return;
+
+    }
+
+    const results = [
+
+        "Dashboard",
+        "AI Assistant",
+        "My Tasks",
+        "Projects",
+        "Coding Agent",
+        "Web Agent",
+        "Social Media",
+        "Research Agent",
+        "AI Memory",
+        "Integrations",
+        "Activity",
+        "Settings"
+
+    ].filter(function (item) {
+
+        return item
+            .toLowerCase()
+            .includes(query);
+
+    });
+
+    DOM.searchResults.innerHTML =
+        results.length
+            ? results
+                .map(function (item) {
+
+                    return `
+                        <div class="search-result-item">
+                            ${escapeHTML(item)}
+                        </div>
+                    `;
+
+                })
+                .join("")
+            : "<p>No results found.</p>";
+
+}
+
+
+// ============================================================
+// NOTIFICATIONS
+// ============================================================
+
+function initializeNotifications() {
+
+    if (DOM.notificationButton) {
+
+        DOM.notificationButton.addEventListener(
             "click",
             function () {
 
-                if (commandInput) {
+                AppState.notificationOpen =
+                    !AppState.notificationOpen;
 
-                    commandInput.focus();
+                if (DOM.notificationPanel) {
+
+                    DOM.notificationPanel.classList.toggle(
+                        "active",
+                        AppState.notificationOpen
+                    );
 
                 }
 
-                showToast(
-                    "Command Center is ready.",
-                    "success"
+            }
+        );
+
+    }
+
+    if (DOM.closeNotificationPanel) {
+
+        DOM.closeNotificationPanel.addEventListener(
+            "click",
+            function () {
+
+                AppState.notificationOpen = false;
+
+                DOM.notificationPanel.classList.remove(
+                    "active"
                 );
 
             }
@@ -2002,10 +1747,97 @@ function registerHeroEvents() {
 
     }
 
+}
 
-    if (heroProjectsButton) {
 
-        heroProjectsButton.addEventListener(
+// ============================================================
+// USER MENU
+// ============================================================
+
+function initializeUserMenu() {
+
+    if (DOM.userMenuButton) {
+
+        DOM.userMenuButton.addEventListener(
+            "click",
+            function () {
+
+                AppState.userMenuOpen =
+                    !AppState.userMenuOpen;
+
+                if (DOM.userMenu) {
+
+                    DOM.userMenu.classList.toggle(
+                        "active",
+                        AppState.userMenuOpen
+                    );
+
+                }
+
+            }
+        );
+
+    }
+
+    if (DOM.profileMenuButton) {
+
+        DOM.profileMenuButton.addEventListener(
+            "click",
+            function () {
+                showToast(
+                    "Profile section is ready for the next stage.",
+                    "info"
+                );
+            }
+        );
+
+    }
+
+    if (DOM.logoutButton) {
+
+        DOM.logoutButton.addEventListener(
+            "click",
+            function () {
+
+                showToast(
+                    "Logout system will be connected later.",
+                    "info"
+                );
+
+            }
+        );
+
+    }
+
+}
+
+
+// ============================================================
+// HERO ACTIONS
+// ============================================================
+
+function initializeHeroActions() {
+
+    if (DOM.heroStartButton) {
+
+        DOM.heroStartButton.addEventListener(
+            "click",
+            function () {
+
+                navigateToPage("assistant");
+
+                if (DOM.commandInput) {
+                    DOM.commandInput.focus();
+                }
+
+            }
+        );
+
+    }
+
+    if (DOM.heroProjectsButton) {
+
+        DOM.heroProjectsButton.addEventListener(
             "click",
             function () {
 
@@ -2020,166 +1852,10 @@ function registerHeroEvents() {
 
 
 // ============================================================
-// DEFAULT DATA
+// KEYBOARD SHORTCUTS
 // ============================================================
 
-function loadDefaultData() {
-
-    AppState.projects = [
-
-        {
-
-            id: "PROJECT_001",
-
-            name: "Sanaullah AI Command Center",
-
-            description:
-                "Personal AI agent management system.",
-
-            createdAt:
-                new Date().toISOString()
-
-        },
-
-
-        {
-
-            id: "PROJECT_002",
-
-            name: "ScaleFlow University",
-
-            description:
-                "AI-powered learning management system.",
-
-            createdAt:
-                new Date().toISOString()
-
-        }
-
-    ];
-
-
-    AppState.tasks = [
-
-        {
-
-            id: "TASK_001",
-
-            name: "Build AI Dashboard",
-
-            status: "active",
-
-            progress: 75
-
-        },
-
-
-        {
-
-            id: "TASK_002",
-
-            name: "Market Research",
-
-            status: "active",
-
-            progress: 43
-
-        },
-
-
-        {
-
-            id: "TASK_003",
-
-            name: "Website Optimization",
-
-            status: "active",
-
-            progress: 62
-
-        }
-
-    ];
-
-
-    AppState.activity = [];
-
-}
-
-
-// ============================================================
-// TASK STORAGE
-// ============================================================
-
-function saveTask(task) {
-
-    AppState.tasks.unshift({
-
-        id: task.id,
-
-        name: task.command,
-
-        status: "ready",
-
-        progress: 0,
-
-        agent: task.agent.name,
-
-        createdAt: task.createdAt
-
-    });
-
-
-    if (AppState.tasks.length > 50) {
-
-        AppState.tasks =
-            AppState.tasks.slice(0, 50);
-
-    }
-
-}
-
-
-// ============================================================
-// ACTIVITY LOG
-// ============================================================
-
-function addActivity(title, description, type) {
-
-    const activity = {
-
-        id: createID("ACTIVITY"),
-
-        title: title,
-
-        description: description,
-
-        type: type || "system",
-
-        timestamp:
-            new Date().toISOString()
-
-    };
-
-
-    AppState.activity.unshift(activity);
-
-
-    if (AppState.activity.length > 100) {
-
-        AppState.activity =
-            AppState.activity.slice(0, 100);
-
-    }
-
-}
-
-
-// ============================================================
-// KEYBOARD EVENTS
-// ============================================================
-
-function registerKeyboardEvents() {
+function initializeKeyboardShortcuts() {
 
     document.addEventListener(
         "keydown",
@@ -2191,7 +1867,6 @@ function registerKeyboardEvents() {
 
             }
 
-
             if (
                 (event.ctrlKey || event.metaKey) &&
                 event.key.toLowerCase() === "k"
@@ -2199,26 +1874,7 @@ function registerKeyboardEvents() {
 
                 event.preventDefault();
 
-                openSearchModal();
-
-            }
-
-        }
-    );
-
-
-    document.addEventListener(
-        "click",
-        function (event) {
-
-            if (
-                userMenu &&
-                AppState.userMenuOpen &&
-                !userMenu.contains(event.target) &&
-                !userMenuButton?.contains(event.target)
-            ) {
-
-                closeUserMenu();
+                openSearch();
 
             }
 
@@ -2235,14 +1891,19 @@ function registerKeyboardEvents() {
 function closeAllPanels() {
 
     closeSidebar();
-
     closeSearch();
+    closeAddProjectModal();
 
-    closeNotifications();
+    AppState.notificationOpen = false;
+    AppState.userMenuOpen = false;
 
-    closeUserMenu();
+    if (DOM.notificationPanel) {
+        DOM.notificationPanel.classList.remove("active");
+    }
 
-    closeProjectModal();
+    if (DOM.userMenu) {
+        DOM.userMenu.classList.remove("active");
+    }
 
 }
 
@@ -2253,38 +1914,24 @@ function closeAllPanels() {
 
 function showToast(message, type) {
 
-    if (!toastContainer) {
+    if (!DOM.toastContainer) {
         return;
     }
 
-
-    const toast = document.createElement("div");
+    const toast =
+        document.createElement("div");
 
     toast.className =
         "toast toast-" +
         (type || "info");
 
+    toast.textContent = message;
 
-    toast.innerHTML = `
-        <span>
-            ${escapeHTML(message)}
-        </span>
-    `;
-
-
-    toastContainer.appendChild(toast);
-
+    DOM.toastContainer.appendChild(toast);
 
     setTimeout(function () {
 
-        toast.classList.add("show");
-
-    }, 10);
-
-
-    setTimeout(function () {
-
-        toast.classList.remove("show");
+        toast.classList.add("hide");
 
         setTimeout(function () {
 
@@ -2292,83 +1939,22 @@ function showToast(message, type) {
 
         }, 300);
 
-    }, 3500);
+    }, 3000);
 
 }
 
 
 // ============================================================
-// COMMAND NORMALIZATION
-// ============================================================
-
-function normalizeCommand(command) {
-
-    return command
-        .toLowerCase()
-        .trim()
-        .replace(/\s+/g, " ");
-
-}
-
-
-// ============================================================
-// KEYWORD CHECK
-// ============================================================
-
-function containsAny(text, keywords) {
-
-    return keywords.some(function (keyword) {
-
-        return text.includes(keyword);
-
-    });
-
-}
-
-
-// ============================================================
-// ID GENERATOR
-// ============================================================
-
-function createID(prefix) {
-
-    return (
-        prefix +
-        "_" +
-        Date.now() +
-        "_" +
-        Math.random()
-            .toString(36)
-            .substring(2, 8)
-            .toUpperCase()
-    );
-
-}
-
-
-// ============================================================
-// ESCAPE HTML
+// HTML ESCAPE
 // ============================================================
 
 function escapeHTML(value) {
 
-    if (value === null || value === undefined) {
-
-        return "";
-
-    }
-
-
     return String(value)
-
         .replace(/&/g, "&amp;")
-
         .replace(/</g, "&lt;")
-
         .replace(/>/g, "&gt;")
-
         .replace(/"/g, "&quot;")
-
         .replace(/'/g, "&#039;");
 
 }
@@ -2396,7 +1982,7 @@ window.addEventListener(
 
 
 // ============================================================
-// ERROR HANDLING
+// GLOBAL ERROR HANDLER
 // ============================================================
 
 window.addEventListener(
@@ -2404,7 +1990,7 @@ window.addEventListener(
     function (event) {
 
         console.error(
-            "Application Error:",
+            "Application error:",
             event.error || event.message
         );
 
@@ -2418,55 +2004,36 @@ window.addEventListener(
 
 window.SanaullahAI = {
 
-    state: AppState,
+    version: "1.0.0",
 
-    navigate: navigateToPage,
+    commandEngine:
+        commandEngine,
 
-    executeCommand: processUserCommand,
+    taskUnderstandingEngine:
+        taskUnderstandingEngine,
 
-    clearCommand: clearCommand,
+    understandTask:
+        taskUnderstandingEngine,
 
-    commandEngine: commandEngine,
+    navigateToPage:
+        navigateToPage,
 
-    understandTask: understandTask,
-
-    createTaskPlan: createTaskPlan,
-
-    selectAgent: selectAgent,
-
-    showToast: showToast,
-
-    getCurrentTask: function () {
-
-        return AppState.currentTask;
-
-    },
-
-    getTasks: function () {
-
-        return AppState.tasks;
-
-    },
-
-    getProjects: function () {
-
-        return AppState.projects;
-
-    },
-
-    getActivity: function () {
-
-        return AppState.activity;
-
-    }
+    getState:
+        function () {
+            return AppState;
+        }
 
 };
 
 
 // ============================================================
-// COMMAND ENGINE READY
+// SYSTEM READY
 // ============================================================
 
 console.log(
-    "Command Engine loaded successfully."
+    "Sanaullah AI Command Center — Task Understanding Engine Part 1 Ready"
+);
+
+console.log(
+    "Command Engine + Task Understanding Engine initialized."
 );
