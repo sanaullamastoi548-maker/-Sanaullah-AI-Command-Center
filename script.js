@@ -1155,17 +1155,20 @@ function buildCommandResultHTML(result) {
             : "<li>No specific entities detected.</li>";
 
     const plan =
-        result.plan
-            .map(function (step, index) {
+    result.plan
+        .map(function (step) {
 
-                return "<li>" +
-                    (index + 1) +
-                    ". " +
-                    escapeHTML(step) +
-                    "</li>";
+            return "<li>" +
+                escapeHTML(
+                    step.replace(
+                        /^\d+\.\s*/,
+                        ""
+                    )
+                ) +
+                "</li>";
 
-            })
-            .join("");
+        })
+        .join("");
 
     return `
 
